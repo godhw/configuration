@@ -110,43 +110,6 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-alias ibrew='/usr/local/bin/brew' 
-export HOMEBREW="/opt/homebrew/bin" 
-PATH="$HOMEBREW:$PATH"
-export PATH="$PATH:/Users/heewon/Development/FlutterProjects/flutter/bin"
-export ANDROID_HOME="/Users/heewon/Library/Android/sdk"
-
-
-# define sml/nj 110.99.2
-export PATH="$PATH:/usr/local/smlnj/bin"
-# end sml/nj 110.99.2
-
-export PATH={$Home}/.rbenv/bin:$PATH && \
-eval "$(rbenv init -)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# NVM
-export NVM_DIR=~/.nvm
-source $(brew --prefix nvm)/nvm.sh
-
-# yarn
-export PATH="$PATH:/opt/yarn-[version]/bin"
-
-# pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-
-# poetry
-export PATH="$HOME/.poetry/bin:$PATH"
-export POETRY_VIRTUALENVS_IN_PROJECT=true
-
-# 2022 fall semester
-alias 2022na="cd /Users/heewon/hanyangUniv/3-2/MAT3008_NA"
-alias 2022csp="cd /Users/heewon/hanyangUniv/3-2/ITE1015_CSP"
-alias 2022cp="cd /Users/heewon/hanyangUniv/3-2/ITE4065_CP"

@@ -1,51 +1,121 @@
 set nocompatible                                    " Using Vim default
+filetype off
 
-" plug-in setting
 " Using Vim-Plug
+" source %
+" PlugInstall
 call plug#begin('~/.vim/plugged')
 
-" plug-in
-Plug 'neoclide/coc.nvim', {'branch': 'release'}     " autocomplete
-Plug 'preservim/nerdtree'                           " file explorer
+" Plug-in list
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}     " autocomplete
+Plug 'ctrlpvim/ctrlp.vim'                           " Finder for Vim
+Plug 'preservim/nerdcommenter'                      " Comment functions
+Plug 'preservim/nerdtree'                           " File explorer
 Plug 'preservim/tagbar'                             " ctags
-Plug 'vim-airline/vim-airline'                      " status/tabline
-Plug 'ctrlpvim/ctrlp.vim'                           " finder for Vim
-Plug 'nathanaelkane/vim-indent-guides'              " visually indent levels
-Plug 'sheerun/vim-polyglot'                         " language pack
-Plug 'rhysd/vim-clang-format'                       " clang formatter
+Plug 'ryanoasis/vim-devicons'                       " Adds Filetype-specific icons
+Plug 'sheerun/vim-polyglot'                         " Syntax Highlight
+Plug 'tpope/vim-fugitive'                           " For git
+Plug 'tpope/vim-surround'                           " For parentheses, quotes, ...
+Plug 'vim-airline/vim-airline'                      " Smarter tab/bottom line
+Plug 'vim-airline/vim-airline-themes'               " Change airline themes
+Plug 'vim-autoformat/vim-autoformat'                " Formatter
+Plug 'ycm-core/youcompleteme'                       " Code completion
 
 call plug#end()
-""""""""""""""""""""""""""""""""""""""""""""""""""""
-""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
-" set cursor in last modified point
-au BufReadPost * 
-\ if line("'\"") > 0 && line("'\"") <= line("$") | 
-\ exe "norm g`\"" | 
-\ endif
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""PlugIn"""""""""""""""""""""""
+" Author:
+"     Heewon Shin - @godhw
+"
+" Update:
+"     230113
+" Parts:
+"     * vim-airline
+"     * NerdTree
+"     * Tagbar
+"     * NERD Commenter
+"     * YouCompleteMe
+"     * vim-autoformat
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""
-" vim indent guides
-""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:indent_guides_guide_size=1
-let g:indent_guides_start_level=2
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""
-" vim airline smarter tab line
+" vim-airline
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#buffer_nr_format = '%s:'
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""
-" vim-clang-format
-""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:clang_format#detect_style_file = 1
+" Themes
+let g:airline_theme='distinguished'
+" After install powerline fonts
+let g:airline_powerline_fonts = 1
 
-" tag file
-set tags=tags
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+" NerdTree
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <C-n> :NERDTreeToggle<CR>
+
+" Close the tab if NERDTree is the only window remaining in it.
+autocmd BufEnter * if winnr('$') == 1 &&
+\ exists('b:NERDTree') &&
+\ b:NERDTree.isTabTree() | quit | endif
+
+" If another buffer tries to replace NERDTree,
+" put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' &&
+\ bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+\ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" |
+\ execute 'buffer'.buf | endif
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Tagbar
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+nmap <F8> :TagbarToggle<CR>
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+" NERD Commenter
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+
+" Allow commenting and inverting empty lines
+let g:NERDCommentEmptyLines = 1
+
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+
+" Keymapping
+nmap <Leader>c<space> <plug>NERDCommenterToggle
+vmap <Leader>c<space> <plug>NERDCommenterToggle
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+" YouCompleteMe
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+"let g:ycm_show_diagnostics_ui = 0
+let g:ycm_error_symbol = '!>'
+let g:ycm_warning_symbol = '>>'
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_key_list_select_completion = ['<C-j>']
+let g:ycm_key_list_previous_completion = ['<C-k>']
+let g:ycm_key_list_stop_completion = ['<C-y>']
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-autoformat
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+noremap <F3> :Autoformat<CR>
+noremap <F4> :AutoformatLine<CR>
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""""""""""Editor"""""""""""""""""""""""
@@ -71,14 +141,13 @@ set tags=tags
 "     * Spell checking
 "     * Misc
 "     * Helper functions
-"     * Cscope
+"     * Cscope & ctags
 "
 " Tips:
 "     au [] * ()
 "         [] : situation
 "         () : command
-"     <leader>: default '/'
-""""""""""""""""""""""""""""""""""""""""""""""""""""
+"     <leader>: default '\'
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""
@@ -96,7 +165,6 @@ au FocusGained,BufEnter * checktime
 
 " :W sudo saves the file(for permission-denied)
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
-
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""
@@ -299,8 +367,11 @@ map <C-h> <C-W>h
 map <C-l> <C-W>l
 
 " Return to last edit position when opening files (You want this!)
+" Set cursor in last modified point
 au BufReadPost * 
-    if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+\ if line("'\"") > 0 && line("'\"") <= line("$") | 
+\ exe "norm g'\"" | 
+\ endif
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""
@@ -366,8 +437,13 @@ map <leader>pp :setlocal paste!<cr>
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""
-" - Cscope
+" - Cscope & ctags
 """"""""""""""""""""""""""""""""""""""""""""""""""""
+
+" ctags
+set tags=./tags,tags
+
+" cscope
 if has("cscope")
     set cscopetag
     set csto=0
